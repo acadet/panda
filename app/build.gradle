@@ -28,8 +28,8 @@ android {
     }
 
     productFlavors {
-        //app
-        unitTest // Build target using src/test folder
+        app
+        unitTest
     }
 
     sourceSets {
@@ -37,6 +37,8 @@ android {
             java {
                 srcDir 'src/test/java' // Adding src/test folder to scope
             }
+            //res.srcDir 'src/test/res'
+            //res.srcDirs = ['src/test/res', 'src/main/res']
         }
     }
 
@@ -142,7 +144,7 @@ def coverageSourceDirs = [
         '../app/src'
 ]
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
+task jacocoTestReport(type: JacocoReport, dependsOn: "testUnitTestDebug") {
     group = "Reporting"
 
     description = "Generate Jacoco coverage reports"

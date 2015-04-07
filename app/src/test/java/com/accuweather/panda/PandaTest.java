@@ -2,18 +2,24 @@ package com.accuweather.panda;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.Robolectric;
 
 /**
  * @class PandaTest
  * @brief
  */
-@Config(emulateSdk = 18, reportSdk = 18)
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
 public class PandaTest {
+
+    private MainActivity _activity;
+
+    @Before
+    public void setUp() {
+        _activity = Robolectric.setupActivity(MainActivity.class);
+    }
 
     @Test
     public void PandaNameTest() {
@@ -24,8 +30,19 @@ public class PandaTest {
         Assert.assertEquals("foo", p.getName());
     }
 
+    @Test
+    public void bar() {
+        Assert.assertTrue(true);
+    }
+
     //    @Test
     //    public void itIsGoingToFail() {
     //        Assert.assertTrue(false);
     //    }
+
+    @Test
+    public void foo() {
+        Assert.assertTrue(true);
+        Assert.assertNotNull(_activity);
+    }
 }
