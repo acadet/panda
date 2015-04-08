@@ -30,6 +30,15 @@ android {
     productFlavors {
         app
         unitTest
+
+        foo {
+            applicationId "com.accuweather.panda.foo"
+            versionName "1.0-foo"
+        }
+        bar {
+            applicationId "com.accuweather.panda.bar"
+            versionName "1.0-bar"
+        }
     }
 
     sourceSets {
@@ -37,8 +46,6 @@ android {
             java {
                 srcDir 'src/test/java' // Adding src/test folder to scope
             }
-            //res.srcDir 'src/test/res'
-            //res.srcDirs = ['src/test/res', 'src/main/res']
         }
     }
 
@@ -169,3 +176,61 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testUnitTestDebug") {
 
 }
 //end Jacoco config
+
+//class CustomBuildTask extends DefaultTask {
+//    @TaskAction
+//    def run() {
+//        mustRunAfter clean
+//        tasks.assemble
+//        tasks.testUnitTestDebug
+//    }
+//}
+
+def buildAliases = [
+        'full' : ['clean', 'assemble', 'testUnitTestDebug'],
+        'light': ['clean', 'assemble']
+]
+def expandedTaskList = []
+
+gradle.startParameter.taskNames.each {
+    expandedTaskList << (buildAliases[it] ? buildAliases[it] : it)
+}
+
+gradle.startParameter.taskNames = expandedTaskList.flatten()
+
+//if (System.getenv().containsKey("BUILD_NAME")) {
+//    def buildName = System.getenv().get("BUILD_NAME")
+//
+//    if (buildAliases.containsKey(buildName)) {
+//        task customBuild(dependsOn: buildAliases[buildName])
+//    } else {
+//        task customBuild() {
+//            println 'Foo'
+//        }
+//    }
+//} else {
+//    task customBuild() {
+//        println 'Boom'
+//    }
+//}
+
+//task customBuild(dependsOn: (System.getenv().hasProperty("BUILD_NAME") ? : 'full'))
+
+//class BuildSwitcherTask extends DefaultTask {
+//    @TaskAction
+//    def run() {
+//        if (System.getenv().hasProperty("BUILD_NAME")) {
+//            mustRunAfter = System.getenv().get("BUILD_NAME")
+//        } else {
+//            println "No supported"
+//        }
+//    }
+//}
+
+//
+//task customBuild(dependsOn: [
+//        'clean',
+//        'assemble',
+//        'testUnitTestDebug'
+//]) {}
+
